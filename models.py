@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
 import csv
-import os
-import sys
 
-from datetime import date
 from datetime import datetime
 
 from peewee import *
-from playhouse.shortcuts import model_to_dict
+
 
 db = SqliteDatabase('journal.db')
 
@@ -47,7 +44,7 @@ def read_csv():
 
 
 def add_entries(entry_list):
-    """add new products to database, update existing products"""
+    """add new entries to database, update existing entries"""
     for entry in entry_list:
         try:
             Entry.create(title=entry['title'],
@@ -56,11 +53,11 @@ def add_entries(entry_list):
                         what_you_learned=entry['what_you_learned'],
                         resources_to_remember=entry['resources_to_remember'])
         except IntegrityError:
-            entry_record = Entry.get(product_name=product['title'])
-            entry_record.entry_date = product['entry_date']
-            entry_record.time_spent = product['time_spent']
-            entry_record.what_you_learned = product['what_you_learned']
-            entry_record.resources_to_remember = product['resources_to_remember']
+            entry_record = Entry.get(title=entry['title'])
+            entry_record.entry_date = entry['entry_date']
+            entry_record.time_spent = entry['time_spent']
+            entry_record.what_you_learned = entry['what_you_learned']
+            entry_record.resources_to_remember = entry['resources_to_remember']
             entry_record.save()
 
 
