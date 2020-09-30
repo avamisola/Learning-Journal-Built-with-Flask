@@ -12,7 +12,7 @@ db = SqliteDatabase('journal.db')
 
 class Entry(Model):
     entry_id = AutoField()
-    title = CharField(max_length=255, unique=True)
+    entry_title = CharField(max_length=255, unique=True)
     entry_date = DateTimeField(default=datetime.now)
     time_spent = IntegerField(default=0)
     what_you_learned = TextField()
@@ -20,7 +20,8 @@ class Entry(Model):
 
     class Meta:
         database = db
-
+        order_by = ('-entry_date',)
+        
 
 def initialize():
     """connect db, create db and table if don't exist"""
@@ -47,13 +48,13 @@ def add_entries(entry_list):
     """add new entries to database, update existing entries"""
     for entry in entry_list:
         try:
-            Entry.create(title=entry['title'],
+            Entry.create(entry_title=entry['entry_title'],
                         entry_date=entry['entry_date'],
                         time_spent=entry['time_spent'],
                         what_you_learned=entry['what_you_learned'],
                         resources_to_remember=entry['resources_to_remember'])
         except IntegrityError:
-            entry_record = Entry.get(title=entry['title'])
+            entry_record = Entry.get(entry_title=entry['entry_title'])
             entry_record.entry_date = entry['entry_date']
             entry_record.time_spent = entry['time_spent']
             entry_record.what_you_learned = entry['what_you_learned']

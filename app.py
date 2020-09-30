@@ -14,7 +14,7 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 
-import forms
+#import forms
 import models
 
 
@@ -24,16 +24,17 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     """homepage with all entries"""
-    return render_template('index.html')
+    entries = models.Entry.select().limit(10)
+    return render_template('index.html', entries=entries)
 
 @app.route("/entries")
-@app.route("/entries/index.html")
 def listing():
     """homepage with all entries, alternate route"""
-    return render_template('index.html')
+    entries = models.Entry.select().limit(10)
+    return render_template('index.html', entries=entries)
 
-@app.route("/entries/<int:id>")
-def detail(id):
+@app.route("/entries/<int:entry_id>")
+def detail(entry_id):
     """view entry detail"""
     return render_template('detail.html')
 
@@ -42,15 +43,15 @@ def add():
     """add entry form"""
     return render_template('new.html')
 
-@app.route("/entries/<int:id>/edit")
-def edit(id):
+@app.route("/entries/<int:entry_id>/edit")
+def edit(entry_id):
     """edit entry form"""
     return render_template('edit.html')
 
-@app.route("/entries/<int:id>/delete")
-def delete():
+@app.route("/entries/<int:entry_id>/delete")
+def delete(entry_id):
     """delete entry"""
-    entry = models.Entry.select().where(models.Entry.id == id)
+    entry = models.Entry.select().where(models.Entry.entry_id == entry_id)
     if entry.count() == 0:
         abort(404)
     entry.delete_instance()
@@ -59,4 +60,5 @@ def delete():
 
 
 if __name__ == "__main__":
+    models.initialize()
     app.run(debug=True, port=8000, host='0.0.0.0')
