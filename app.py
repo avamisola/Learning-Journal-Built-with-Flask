@@ -33,10 +33,12 @@ def listing():
     entries = models.Entry.select().limit(10)
     return render_template('index.html', entries=entries)
 
-@app.route("/entries/<int:entry_id>")
+@app.route("/entries/<int:entry_id>", methods=('GET', 'POST'))
 def detail(entry_id):
     """view entry detail"""
-    return render_template('detail.html')
+    entry = models.Entry.select().where(models.Entry.entry_id == entry_id)
+    print(entry)
+    return render_template('detail.html', entry=entry)
 
 @app.route("/entries/new")
 def add():
