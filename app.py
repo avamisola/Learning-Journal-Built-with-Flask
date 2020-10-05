@@ -12,6 +12,7 @@ from flask import flash
 from flask import Flask
 from flask import redirect
 from flask import render_template
+from flask import request
 from flask import url_for
 
 import forms
@@ -44,9 +45,17 @@ def detail(entry_id):
 @app.route("/entries/new", methods=('GET', 'POST'))
 def add():
     """add entry form"""
-    form = forms.Entry()
+    form = forms.EntryForm()
     if form.validate_on_submit():
-        print(form)
+        data = request.form.to_dict()
+        entry_dict = {}
+        entry_dict["entry_title"] = data["entry_title"]
+        entry_dict["entry_date"] = models.convert_date(data["entry_date"])
+        entry_dict["time_spent"] = data["time_spent"]
+        entry_dict["what_you_learned"] = data["what_you_learned"]
+        entry_dict["resources_to_remember"] = data["resources_to_remember"]
+        entry_list = [entry_dict]
+        models.add_entries(entry_list)
         return redirect(url_for('index'))
     return render_template('new.html', form=form)
 

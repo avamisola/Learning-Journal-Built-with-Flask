@@ -16,27 +16,29 @@ def entry_title_exists(form, field):
         raise ValidationError("Entry title already exists.")
 
 
-class Entry(Form):
+class EntryForm(Form):
     entry_title = StringField(
         "Title", validators=[
             DataRequired(),
             entry_title_exists
         ])
-    created = DateField(
-        "Date", validators=[
-            DataRequired()
-        ])
-    time_spent = IntegerField(
-        "Time Spent",
+    entry_date = DateField(
+        "Date (mm/dd/yyyy)",
+        format='%m/%d/%Y',
         validators=[
             DataRequired()
         ])
-    learned = TextAreaField(
+    time_spent = IntegerField(
+        "Time Spent (hours)",
+        validators=[
+            DataRequired()
+        ])
+    what_you_learned = TextAreaField(
         "What I Learned",
         validators=[
             DataRequired()
         ])
-    to_remember = TextAreaField(
+    resources_to_remember = TextAreaField(
         "Resources to Remember",
         validators=[
             DataRequired()

@@ -31,6 +31,12 @@ def initialize():
         read_csv()
 
 
+def convert_date(date):
+    """convert date for db insert"""
+    converted_date = datetime.strptime(date, '%m/%d/%Y')
+    return datetime.combine(converted_date, datetime.min.time())
+
+
 def read_csv():
     """read csv and clean data, add to database"""
     with open('entry.csv', newline='') as csvfile:
@@ -38,8 +44,7 @@ def read_csv():
         rows = list(entry_reader)
         entry_list = []
         for row in rows:
-            converted_date = datetime.strptime(row['entry_date'], '%m/%d/%Y')
-            row['entry_date'] = datetime.combine(converted_date, datetime.min.time())
+            row['entry_date'] = convert_date(row['entry_date'])
             entry_list.append(row)
         add_entries(entry_list)
 
