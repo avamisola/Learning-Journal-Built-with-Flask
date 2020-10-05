@@ -14,11 +14,12 @@ from flask import redirect
 from flask import render_template
 from flask import url_for
 
-#import forms
+import forms
 import models
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'required to use flask_wtf'
 
 
 @app.route("/")
@@ -40,17 +41,21 @@ def detail(entry_id):
     print(entry)
     return render_template('detail.html', entry=entry)
 
-@app.route("/entries/new")
+@app.route("/entries/new", methods=('GET', 'POST'))
 def add():
     """add entry form"""
-    return render_template('new.html')
+    form = forms.Entry()
+    if form.validate_on_submit():
+        print(form)
+        return redirect(url_for('index'))
+    return render_template('new.html', form=form)
 
-@app.route("/entries/<int:entry_id>/edit")
+@app.route("/entries/<int:entry_id>/edit", methods=('GET', 'POST'))
 def edit(entry_id):
     """edit entry form"""
     return render_template('edit.html')
 
-@app.route("/entries/<int:entry_id>/delete")
+@app.route("/entries/<int:entry_id>/delete", methods=('GET', 'POST'))
 def delete(entry_id):
     """delete entry"""
     entry = models.Entry.select().where(models.Entry.entry_id == entry_id)

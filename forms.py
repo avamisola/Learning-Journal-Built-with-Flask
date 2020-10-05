@@ -13,17 +13,31 @@ from models import Entry
 
 def entry_title_exists(form, field):
     if Entry.select().where(Entry.entry_title == field.data).exists():
-        raise ValidationError("Entry entry_title already exists.")
+        raise ValidationError("Entry title already exists.")
 
 
-class EntryForm(Form):
-    entry_title = StringField("entry_title", validators=[
-        DataRequired(), entry_title_exists])
-    created = DateField("Data", validators=[
-        DataRequired()])
-    time_spent = IntegerField("Time Spent", validators=[
-        DataRequired()])
-    learned = TextAreaField("What you learned", validators=[
-        DataRequired()])
-    to_remember = TextAreaField("Resources to remember",
-                                validators=[DataRequired()])
+class Entry(Form):
+    entry_title = StringField(
+        "Title", validators=[
+            DataRequired(),
+            entry_title_exists
+        ])
+    created = DateField(
+        "Date", validators=[
+            DataRequired()
+        ])
+    time_spent = IntegerField(
+        "Time Spent",
+        validators=[
+            DataRequired()
+        ])
+    learned = TextAreaField(
+        "What I Learned",
+        validators=[
+            DataRequired()
+        ])
+    to_remember = TextAreaField(
+        "Resources to Remember",
+        validators=[
+            DataRequired()
+        ])

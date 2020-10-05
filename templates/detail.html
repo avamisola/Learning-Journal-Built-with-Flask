@@ -9,26 +9,22 @@
         <time datetime="{{ entry.entry_date.strftime('%Y-%m-%d') }}">{{ entry.entry_date.strftime('%B %d, %Y') }}</time>
         <div class="entry">
             <h3>Time Spent: </h3>
-            <p>{{ entry.time_spent }}</p>
+            <p>{{ entry.time_spent }} Hours</p>
         </div>
         <div class="entry">
             <h3>What I Learned:</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut rhoncus felis, vel tincidunt neque.</p>
-            <p>Cras egestas ac ipsum in posuere. Fusce suscipit, libero id malesuada placerat, orci velit semper metus, quis pulvinar sem nunc vel augue. In ornare tempor metus, sit amet congue justo porta et. Etiam pretium, sapien non fermentum consequat, <a href="">dolor augue</a> gravida lacus, non accumsan. Vestibulum ut metus eleifend, malesuada nisl at, scelerisque sapien.</p>
+            <p>{{ entry.what_you_learned }}</p>
         </div>
         <div class="entry">
             <h3>Resources to Remember:</h3>
             <ul>
-                <li><a href="">Lorem ipsum dolor sit amet</a></li>
-                <li><a href="">Cras accumsan cursus ante, non dapibus tempor</a></li>
-                <li>Nunc ut rhoncus felis, vel tincidunt neque</li>
-                <li><a href="">Ipsum dolor sit amet</a></li>
+                <li>{{ entry.resources_to_remember }}</li>
             </ul>
         </div>
     </article>
 </div>
 <div class="edit">
-    <p><a href="edit.html">Edit Entry</a></p>
+    <p><a href="{{ url_for('edit', entry_id=entry.entry_id) }}">Edit Entry</a></p>
 </div>
 {% endfor %}
 {% endblock %}

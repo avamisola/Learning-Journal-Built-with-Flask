@@ -1,18 +1,26 @@
 {% extends "layout.html" %}
-
 {% from 'macros.html' import render_field %}
+
 
 {% block content %}
 <div class="new-entry">
     <h2>New Entry</h2>
     <form method="POST" action="">
-        {{ form.title.label }}{{ render_field(form.title) }}<br>
-        {{ form.created.label }}{{ render_field(form.created) }}<br>
-        {{ form.time_spent.label }}{{ render_field(form.time_spent(min=0)) }}<br>
-        {{ form.learned.label }}{{ render_field(form.learned) }}<br>
-        {{ form.to_remember.label }}{{ render_field(form.to_remember) }}<br>
+        {{ form.hidden_tag() }}
+        {% for field in form %}
+            {{ render_field(field) }}
+        {% endfor %}
         <input type="submit" value="Publish Entry" class="button">
         <a href="{{ url_for('index') }}" class="button button-secondary">Cancel</a>
     </form>
 </div>
 {% endblock %}
+
+
+
+
+#{{ form.entry_title.label }}{{ render_field(form.entry_title) }}<br>
+#{{ form.entry_date.label }}{{ render_field(form.entry_date) }}<br>
+#{{ form.time_spent.label }}{{ render_field(form.time_spent) }}<br>
+#{{ form.what_you_learned.label }}{{ render_field(form.what_you_learned) }}<br>
+#{{ form.resources_to_remember.label }}{{ render_field(form.resources_to_remember) }}<br>
