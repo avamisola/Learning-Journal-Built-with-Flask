@@ -79,7 +79,7 @@ def delete(entry_id):
     entry = models.Entry.select().where(models.Entry.entry_id == entry_id)
     if entry.count() == 0:
         abort(404)
-    entry.delete_instance()
+    models.Entry.delete().where(models.Entry.entry_id == entry_id).execute()
     return redirect(url_for('index'))
 
 
