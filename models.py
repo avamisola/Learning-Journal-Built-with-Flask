@@ -20,7 +20,6 @@ class Entry(Model):
 
     class Meta:
         database = db
-        order_by = ('-entry_date',)
         
 
 def initialize():
@@ -65,6 +64,18 @@ def add_entries(entry_list):
             entry_record.what_you_learned = entry['what_you_learned']
             entry_record.resources_to_remember = entry['resources_to_remember']
             entry_record.save()
+
+
+def convert_form_data(data):
+    """convert form data into dictionary inside list, format required by add_entries"""
+    entry_dict = {}
+    entry_dict["entry_title"] = data["entry_title"].strip()
+    entry_dict["entry_date"] = convert_date(data["entry_date"])
+    entry_dict["time_spent"] = data["time_spent"].strip()
+    entry_dict["what_you_learned"] = data["what_you_learned"].strip()
+    entry_dict["resources_to_remember"] = data["resources_to_remember"].strip()
+    entry_list = [entry_dict]
+    return entry_list
 
 
 if __name__ == "__main__":
